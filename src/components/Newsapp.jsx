@@ -4,7 +4,8 @@ import Card from "./Card";
 const Newsapp = () => {
   const [search, setSearch] = useState("india");
   const [newsData, setNewsData] = useState(null);
-  const API_KEY = "301deb2526e84a97b4fdd8192170c7fe";
+  const API_KEY = import.meta.env.VITE_SECRET_KEY;
+  console.log("API_KEY" +API_KEY)
 
   const getData = async () => {
     const response = await fetch(
