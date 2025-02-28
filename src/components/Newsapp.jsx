@@ -7,14 +7,37 @@ const Newsapp = () => {
   const API_KEY = import.meta.env.VITE_SECRET_KEY;
   console.log("API_KEY" +API_KEY)
 
+  // const getData = async () => {
+  //   const response = await fetch(
+  //     `https://newsapi.org/v2/everything?q=${search}&apiKey=${API_KEY}`
+  //   );
+  //   const jsonData = await response.json();
+  //   let dt = jsonData.articles.slice(0, 5);
+  //   setNewsData(dt);
+  // };
   const getData = async () => {
-    const response = await fetch(
-      `https://newsapi.org/v2/everything?q=${search}&apiKey=${API_KEY}`
-    );
-    const jsonData = await response.json();
-    let dt = jsonData.articles.slice(0, 10);
-    setNewsData(dt);
+    if (!search) {
+      console.log('Search term is empty');
+      return;
+    }
+  
+    try {
+      const response = await fetch(
+        `https://newsapi.org/v2/everything?q=${search}&apiKey=${API_KEY}`
+      );
+      const jsonData = await response.json();
+      
+      if (jsonData.articles && Array.isArray(jsonData.articles)) {
+        let dt = jsonData.articles.slice(0, 5);
+        setNewsData(dt);
+      } else {
+        console.error('No articles found or invalid response:', jsonData);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   };
+  
 
   useEffect(() => {
     getData();
